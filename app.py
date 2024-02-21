@@ -22,7 +22,8 @@ def get_pdf_text(pdf_docs):
     text =""
     for pdf in pdf_docs:
        pdf_io =  io.BytesIO(pdf)
-       pdf_reader = PdfReader(pdf_io)
+       pdf2 = seek(pdf_io)
+       pdf_reader = PdfReader(pdf2)
             
        text += pdf_reader.extractText()
     return text
