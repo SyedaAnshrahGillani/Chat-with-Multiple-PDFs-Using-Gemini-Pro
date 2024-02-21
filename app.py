@@ -15,12 +15,19 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GENAI_API_KEY"))
 
 def get_pdf_text(pdf_docs):
-    text =""
-    for pdf in pdf_docs:
-        pdf_reader = PdfReader(pdf)
-        for page in pdf_reader.pages:
-            text += page.extractText()
-    return text
+  text = ""
+  for pdf in pdf_docs:
+    # Check if pdf is a file path or a seekable file-like object
+    if isinstance(pdf, str):
+      with open(pdf, 'rb') as pdf_file:
+        pdf_reader = PdfReader(pdf_file)
+    else:
+      pdf_reader = PdfReader(pdf)
+    
+    for page in pdf_reader.pages:
+      text += page.extractText()
+  return text
+
 
 def get_text_chunks(text_chunks):
     embeddings=GoogleGenerativeAIEmbeddings(model="models/embedding-001")
