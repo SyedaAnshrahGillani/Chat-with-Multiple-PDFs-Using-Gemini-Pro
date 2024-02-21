@@ -1,7 +1,4 @@
---upgrade pip
-pdfminer.six
-io
-
+fitz
 streamlit
 google-generativeai
 python-dotenv
