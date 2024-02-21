@@ -21,13 +21,13 @@ genai.configure(api_key=os.getenv("GENAI_API_KEY"))
 def get_pdf_text(pdf_docs):
     text = ""
     for pdf in pdf_docs:
-        #pdf_io = io.BytesIO(pdf)
-        #pdf_reader = PdfReader(pdf_io)
-        loader =PyPDFLoader(pdf)
-        data= loader.load()
+        # Convert the string to a bytes-like object using io.BytesIO
+        pdf_io = io.BytesIO(pdf.encode())
+        loader = PyPDFLoader(pdf_io)
+        data = loader.load()
         pdf_reader = data
         # Skip early EOF_MARKER if encountered
-        
+
         text += pdf_reader.extractText()
     return text
 
