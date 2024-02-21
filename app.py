@@ -21,11 +21,9 @@ genai.configure(api_key=os.getenv("GENAI_API_KEY"))
 def get_pdf_text(pdf_docs):
     text =""
     for pdf in pdf_docs:
-       
-        
-        pdf_reader = PdfFileReader(pdf)
+       pdf_reader = PdfFileReader(pdf)
             
-            text += pdf_reader.extractText()
+        text += pdf_reader.extractText()
     return text
 
 
