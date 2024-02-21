@@ -1,3 +1,6 @@
+pdfminer.six
+io
+
 streamlit
 google-generativeai
 python-dotenv
