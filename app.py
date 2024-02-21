@@ -1,4 +1,4 @@
-
+from langchain.document_loaders import PyPDFLoader
 import streamlit as st
 from PyPDF2 import PdfReader
 from PyPDF2 import PdfFileReader
@@ -21,12 +21,13 @@ genai.configure(api_key=os.getenv("GENAI_API_KEY"))
 def get_pdf_text(pdf_docs):
     text = ""
     for pdf in pdf_docs:
-        pdf_io = io.BytesIO(pdf)
+        #pdf_io = io.BytesIO(pdf)
         #pdf_reader = PdfReader(pdf_io)
-        pdf_reader = PdfReader(pdf_io, strict=False)
+        loader =PyPDFLoader(pdf)
+        data= loader.load()
+        pdf_reader = data
         # Skip early EOF_MARKER if encountered
-        while pdf_reader.read(chunk_size=4) == b'%%EO':  # Read four bytes at a time
-            pass
+        
         text += pdf_reader.extractText()
     return text
 
