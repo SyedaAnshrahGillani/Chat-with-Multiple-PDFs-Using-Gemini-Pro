@@ -10,41 +10,39 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
-
+import io
 load_dotenv()
 
 genai.configure(api_key=os.getenv("GENAI_API_KEY"))
 
 import io
 
-#def get_pdf_text(pdf_docs):
-#  text = ""
-#  for pdf in pdf_docs:
-#    # Check if pdf is a file path or binary data
-#    if isinstance(pdf, str):
-#      with open(pdf, 'rb') as pdf_file:
-#        pdf_reader = PdfReader(pdf_file)
-#    else:
-#      # Handle binary data using io.BytesIO
-#      pdf_file = io.BytesIO(pdf)
-#      pdf_reader = PdfReader(pdf_file)
-
-    # Consider using alternative libraries for non-standard PDFs
-    # if `PdfReader` struggles
-
-#    for page in pdf_reader.pages:
-#      text += page.extractText()
-#  return text
-
 def get_pdf_text(pdf_docs):
-    text =""
-    for pdf in pdf_docs:
-       
+  text = ""
+  for pdf in pdf_docs:
+    # Check if pdf is a file path or binary data
+    if isinstance(pdf, str):
+      with open(pdf, 'rb') as pdf_file:
+        pdf_reader = PdfReader(pdf_file)
+    else:
+      # Handle binary data using io.BytesIO
+      pdf_file = io.BytesIO(pdf)
+      pdf_reader = PdfReader(pdf_file)
+    
+    for page in range(pdf_reader.numPages):
+      text += pdf_reader.getPage(page).extractText()
+  return text
+
+
+#def get_pdf_text(pdf_docs):
+#    text =""
+#    for pdf in pdf_docs:
+#       
         
-        pdf_reader = PdfReader(pdf)
-        for page in range(pdf_reader.numPages):
-            text += pdf_reader.getPage(page).extractText()
-    return text
+#        pdf_reader = PdfReader(pdf)
+#        for page in range(pdf_reader.numPages):
+#            text += pdf_reader.getPage(page).extractText()
+ #   return text
 
 
 
