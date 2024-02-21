@@ -22,7 +22,8 @@ def get_pdf_text(pdf_docs):
     text = ""
     for pdf in pdf_docs:
         pdf_io = io.BytesIO(pdf)
-        pdf_reader = PdfReader(pdf_io)
+        #pdf_reader = PdfReader(pdf_io)
+        pdf_reader = PdfReader(pdf_io, strict=False)
         # Skip early EOF_MARKER if encountered
         while pdf_reader.read(chunk_size=4) == b'%%EO':  # Read four bytes at a time
             pass
