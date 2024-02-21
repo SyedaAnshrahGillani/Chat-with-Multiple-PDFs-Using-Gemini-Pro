@@ -22,10 +22,10 @@ def get_pdf_text(pdf_docs):
     text =""
     for pdf in pdf_docs:
        
-        with open(pdf, 'rb')as file:
-            pdf_reader = PdfFileReader(pdf)
-            for page in range(pdf_reader.numPages):
-                text += pdf_reader.getPage(page).extractText()
+        
+        pdf_reader = PdfFileReader(pdf)
+            
+            text += pdf_reader.extractText()
     return text
 
 
