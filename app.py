@@ -21,8 +21,11 @@ genai.configure(api_key=os.getenv("GENAI_API_KEY"))
 def get_pdf_text(pdf_docs):
     text = ""
     for pdf in pdf_docs:
-        # Convert the string to a bytes-like object using io.BytesIO
-        pdf_io = io.BytesIO(pdf.encode())
+        # Avoid double encoding:
+        if isinstance(pdf, bytes):
+            pdf_io = io.BytesIO(pdf)  # No encoding needed if pdf is already bytes
+        else:
+            pdf_io = io.BytesIO(pdf.encode())  # Only encode if pdf is a string
         loader = PyPDFLoader(pdf_io)
         data = loader.load()
         pdf_reader = data
@@ -30,6 +33,7 @@ def get_pdf_text(pdf_docs):
 
         text += pdf_reader.extractText()
     return text
+
 
 
 #def get_pdf_text(pdf_docs):
