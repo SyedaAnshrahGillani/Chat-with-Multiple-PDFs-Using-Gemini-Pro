@@ -1,4 +1,5 @@
-fitz
+
+PyMuPDF==1.16.14
 streamlit
 google-generativeai
 python-dotenv
