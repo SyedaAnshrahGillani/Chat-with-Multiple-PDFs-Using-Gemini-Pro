@@ -39,11 +39,12 @@ import io
 def get_pdf_text(pdf_docs):
     text =""
     for pdf in pdf_docs:
-        doc = fitz.open(pdf)
-        
-        for page in doc:
-            text += page.get_text()
-        doc.close()
+       
+        with open(pdf, "rb") as file:
+            pdf_reader = PdfReader(file)
+            for page in range(pdf_reader.numPages):
+                text += pdf_reader.getPage(page).extractText()
+    return text
 
 
 
