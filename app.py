@@ -16,24 +16,48 @@ genai.configure(api_key=os.getenv("GENAI_API_KEY"))
 
 import io
 
-def get_pdf_text(pdf_docs):
-  text = ""
-  for pdf in pdf_docs:
-    # Check if pdf is a file path or binary data
-    if isinstance(pdf, str):
-      with open(pdf, 'rb') as pdf_file:
-        pdf_reader = PdfReader(pdf_file)
-    else:
-      # Handle binary data using io.BytesIO
-      pdf_file = io.BytesIO(pdf)
-      pdf_reader = PdfReader(pdf_file)
+#def get_pdf_text(pdf_docs):
+#  text = ""
+#  for pdf in pdf_docs:
+#    # Check if pdf is a file path or binary data
+#    if isinstance(pdf, str):
+#      with open(pdf, 'rb') as pdf_file:
+#        pdf_reader = PdfReader(pdf_file)
+#    else:
+#      # Handle binary data using io.BytesIO
+#      pdf_file = io.BytesIO(pdf)
+#      pdf_reader = PdfReader(pdf_file)
 
     # Consider using alternative libraries for non-standard PDFs
     # if `PdfReader` struggles
 
-    for page in pdf_reader.pages:
-      text += page.extractText()
+#    for page in pdf_reader.pages:
+#      text += page.extractText()
+#  return text
+
+from io import StringIO
+from pdfminer.converter import TextConverter
+from pdfminer.layout import LAParams
+from pdfminer.pdfinterp import PDFPageInterpreter
+from pdfminer.pdfinterp import PDFResourceManager
+from pdfminer.pdfpage import PDFPage
+
+def get_pdf_text(pdf_docs):
+  text = ""
+  for pdf in pdf_docs:
+    # Open the PDF and create a text converter
+    with open(pdf, 'rb') as pdf_file:
+      rsrcmgr = PDFResourceManager()
+      outfp = StringIO()
+      interpreter = PDFPageInterpreter(rsrcmgr, outfp)
+      converter = TextConverter(rsrcmgr, outfp, laparams=LAParams())
+      for page in PDFPage.get_pages(pdf_file):
+        interpreter.process_page(page)
+        text += outfp.getvalue()
+        outfp.truncate(0)  # Clear buffer for next page
+    outfp.close()
   return text
+
 
 
 
