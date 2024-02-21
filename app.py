@@ -23,7 +23,7 @@ def get_pdf_text(pdf_docs):
     for pdf in pdf_docs:
        pdf_reader = PdfFileReader(pdf)
             
-        text += pdf_reader.extractText()
+       text += pdf_reader.extractText()
     return text
 
 
