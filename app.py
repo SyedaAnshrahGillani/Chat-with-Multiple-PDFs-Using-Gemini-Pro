@@ -41,7 +41,7 @@ def get_pdf_text(pdf_docs):
     for pdf in pdf_docs:
        
         
-        pdf_reader = PdfReader(file)
+        pdf_reader = PdfReader(pdf)
         for page in range(pdf_reader.numPages):
             text += pdf_reader.getPage(page).extractText()
     return text
