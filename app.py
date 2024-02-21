@@ -14,19 +14,27 @@ load_dotenv()
 
 genai.configure(api_key=os.getenv("GENAI_API_KEY"))
 
+import io
+
 def get_pdf_text(pdf_docs):
   text = ""
   for pdf in pdf_docs:
-    # Check if pdf is a file path or a seekable file-like object
+    # Check if pdf is a file path or binary data
     if isinstance(pdf, str):
       with open(pdf, 'rb') as pdf_file:
         pdf_reader = PdfReader(pdf_file)
     else:
-      pdf_reader = PdfReader(pdf)
-    
+      # Handle binary data using io.BytesIO
+      pdf_file = io.BytesIO(pdf)
+      pdf_reader = PdfReader(pdf_file)
+
+    # Consider using alternative libraries for non-standard PDFs
+    # if `PdfReader` struggles
+
     for page in pdf_reader.pages:
       text += page.extractText()
   return text
+
 
 
 def get_text_chunks(text_chunks):
